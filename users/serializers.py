@@ -1,6 +1,7 @@
 from datetime import date
 
 from rest_framework import serializers
+from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 
 from .models import Profile
 
@@ -52,4 +53,21 @@ class ProfileSerializer(serializers.ModelSerializer):
             )
 
         return attrs
+
+
+class LogoutSerializer(serializers.Serializer):
+    refresh = serializers.CharField()
+
+    def validate_refresh(self, value):
+        try:
+            RefreshToken(value)
+        except TokenError as exc:
+            raise serializers.ValidationError("Refresh token invalido o expirado.") from exc
+        return value
+
+    def save(self, **kwargs):
+        refresh_token = self.validated_data["refresh"]
+        token = RefreshToken(refresh_token)
+        token.blacklist()
+
 
