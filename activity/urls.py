@@ -1,6 +1,14 @@
-from django.urls import path
+from django.urls import include, path
+from rest_framework.routers import DefaultRouter
+
+from .views import ActivityRecordViewSet, PhysicalActivityViewSet
 
 app_name = "activity"
 
-urlpatterns = []
+router = DefaultRouter()
+router.register(r"activities", PhysicalActivityViewSet, basename="activity")
+router.register(r"activity-records", ActivityRecordViewSet, basename="activity-record")
 
+urlpatterns = [
+    path("", include(router.urls)),
+]
