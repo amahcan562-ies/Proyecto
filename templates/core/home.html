@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio | NutriTrack{% endblock %}
+
+{% block content %}
+  <section class="hero">
+    <h1>NutriTrack</h1>
+    <p>Panel basico para seguimiento de nutricion y actividad fisica.</p>
+    <div class="hero-actions">
+      <a class="button" href="{% url 'core:help' %}">Ver guia rapida</a>
+    </div>
+  </section>
+
+  <section class="grid">
+    <article class="card">
+      <h2>Registro diario</h2>
+      <p>Control de agua, notas y evaluaciones del dia.</p>
+    </article>
+    <article class="card">
+      <h2>Alimentacion</h2>
+      <p>Catalogo de alimentos y consumo diario.</p>
+    </article>
+    <article class="card">
+      <h2>Actividad</h2>
+      <p>Entrenamientos y gasto energetico.</p>
+    </article>
+  </section>
+{% endblock %}
+

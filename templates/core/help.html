@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Ayuda | NutriTrack{% endblock %}
+
+{% block content %}
+  <section class="stack">
+    <h1>Guia rapida</h1>
+    <p>Esta es la primera version visual. Sirve como base para la fase 7.</p>
+
+    <div class="card">
+      <h2>Acceso</h2>
+      <p>La autenticacion se gestiona por API con JWT.</p>
+    </div>
+
+    <div class="card">
+      <h2>Rutas principales</h2>
+      <ul class="list">
+        <li>Usuarios: /users/</li>
+        <li>Nutricion: /nutrition/</li>
+        <li>Actividad: /activity/</li>
+        <li>Evaluaciones: /evaluations/</li>
+      </ul>
+    </div>
+  </section>
+{% endblock %}
+

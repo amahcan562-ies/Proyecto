@@ -1,0 +1,32 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}NutriTrack{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="{% url 'core:home' %}">NutriTrack</a>
+        <nav class="nav">
+          <a href="{% url 'core:home' %}">Inicio</a>
+          <a href="{% url 'core:help' %}">Ayuda</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>Proyecto academico TFG DAW. Version inicial de la interfaz.</p>
+      </div>
+    </footer>
+  </body>
+</html>
+
