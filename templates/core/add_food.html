@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Food | NutriTrack{% endblock %}
+{% block page_title %}Add Food{% endblock %}
+{% block page_subtitle %}Log your meals and calories{% endblock %}
+
+{% block content %}
+  <section class="grid-two">
+    <article class="card">
+      <div class="card-header">
+        <h2>Log food</h2>
+        <p>Register a new consumption for today</p>
+      </div>
+      <form method="post" class="form">
+        {% csrf_token %}
+        {% if form_error %}
+          <p class="form-error">{{ form_error }}</p>
+        {% endif %}
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="{{ form.food.id_for_label }}">Food</label>
+            {{ form.food }}
+            {{ form.food.errors }}
+          </div>
+          <div class="form-field">
+            <label for="{{ form.amount_g.id_for_label }}">Amount (g)</label>
+            {{ form.amount_g }}
+            {{ form.amount_g.errors }}
+          </div>
+          <div class="form-field">
+            <label for="{{ form.meal_type.id_for_label }}">Meal type</label>
+            {{ form.meal_type }}
+            {{ form.meal_type.errors }}
+          </div>
+          <div class="form-field">
+            <label for="{{ form.consumed_at.id_for_label }}">Time</label>
+            {{ form.consumed_at }}
+            {{ form.consumed_at.errors }}
+          </div>
+          <div class="form-field form-full">
+            <label for="{{ form.notes.id_for_label }}">Notes</label>
+            {{ form.notes }}
+            {{ form.notes.errors }}
+          </div>
+        </div>
+        <button class="button" type="submit">Save consumption</button>
+      </form>
+    </article>
+
+    <article class="card">
+      <div class="card-header">
+        <h2>Available foods</h2>
+        <p>Most used items from your catalog</p>
+      </div>
+      <div class="list-stack">
+        {% for food in foods %}
+          <div class="list-row">
+            <div>
+              <p class="list-title">{{ food.name }}</p>
+              <p class="list-meta">{{ food.calories_per_100g|floatformat:0 }} kcal / 100g</p>
+            </div>
+            <span class="list-tag">{{ food.brand|default:"Generic" }}</span>
+          </div>
+        {% empty %}
+          <p class="muted">No foods available yet.</p>
+        {% endfor %}
+      </div>
+    </article>
+  </section>
+
+  <section class="card">
+    <div class="card-header">
+      <h2>Today's meals</h2>
+      <p>Latest consumptions logged today</p>
+    </div>
+    <div class="list-stack">
+      {% for item in consumptions %}
+        <div class="list-row">
+          <div>
+            <p class="list-title">{{ item.food.name }}</p>
+            <p class="list-meta">{{ item.amount_g|floatformat:0 }} g - {{ item.meal_type }}</p>
+          </div>
+          <span class="list-tag">{{ item.created_at|date:"H:i" }}</span>
+        </div>
+      {% empty %}
+        <p class="muted">No meals logged yet.</p>
+      {% endfor %}
+    </div>
+  </section>
+{% endblock %}
+

@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}Activity | NutriTrack{% endblock %}
+{% block page_title %}Activity{% endblock %}
+{% block page_subtitle %}Track your workouts and energy{% endblock %}
+
+{% block content %}
+  <section class="grid-two">
+    <article class="card">
+      <div class="card-header">
+        <h2>Log activity</h2>
+        <p>Register a new activity session</p>
+      </div>
+      <form method="post" class="form">
+        {% csrf_token %}
+        {% if form_error %}
+          <p class="form-error">{{ form_error }}</p>
+        {% endif %}
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="{{ form.activity.id_for_label }}">Activity</label>
+            {{ form.activity }}
+            {{ form.activity.errors }}
+          </div>
+          <div class="form-field">
+            <label for="{{ form.duration_min.id_for_label }}">Duration (min)</label>
+            {{ form.duration_min }}
+            {{ form.duration_min.errors }}
+          </div>
+          <div class="form-field">
+            <label for="{{ form.performed_at.id_for_label }}">Time</label>
+            {{ form.performed_at }}
+            {{ form.performed_at.errors }}
+          </div>
+          <div class="form-field form-full">
+            <label for="{{ form.notes.id_for_label }}">Notes</label>
+            {{ form.notes }}
+            {{ form.notes.errors }}
+          </div>
+        </div>
+        <button class="button" type="submit">Save activity</button>
+      </form>
+    </article>
+
+    <article class="card">
+      <div class="card-header">
+        <h2>Available activities</h2>
+        <p>Suggested activities from your catalog</p>
+      </div>
+      <div class="list-stack">
+        {% for activity in activities %}
+          <div class="list-row">
+            <div>
+              <p class="list-title">{{ activity.name }}</p>
+              <p class="list-meta">Intensity: {{ activity.intensity }}</p>
+            </div>
+            <span class="list-tag">MET {{ activity.met_value }}</span>
+          </div>
+        {% empty %}
+          <p class="muted">No activities available yet.</p>
+        {% endfor %}
+      </div>
+    </article>
+  </section>
+
+  <section class="card">
+    <div class="card-header">
+      <h2>Today's activities</h2>
+      <p>Latest sessions logged today</p>
+    </div>
+    <div class="list-stack">
+      {% for item in records %}
+        <div class="list-row">
+          <div>
+            <p class="list-title">{{ item.activity.name }}</p>
+            <p class="list-meta">{{ item.duration_min }} min</p>
+          </div>
+          <span class="list-tag">{{ item.calories_burned_estimated|default:"-" }} kcal</span>
+        </div>
+      {% empty %}
+        <p class="muted">No activity logged yet.</p>
+      {% endfor %}
+    </div>
+  </section>
+{% endblock %}
+

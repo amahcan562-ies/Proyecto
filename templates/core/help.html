@@ -1,26 +1,30 @@
 {% extends 'base.html' %}
 
-{% block title %}Ayuda | NutriTrack{% endblock %}
+{% block title %}Help | NutriTrack{% endblock %}
+{% block page_title %}Help{% endblock %}
+{% block page_subtitle %}Quick guide for this interface{% endblock %}
 
 {% block content %}
-  <section class="stack">
-    <h1>Guia rapida</h1>
-    <p>Esta es la primera version visual. Sirve como base para la fase 7.</p>
+  <section class="grid-two">
+    <article class="card">
+      <div class="card-header">
+        <h2>Access</h2>
+        <p>The API uses JWT for authentication.</p>
+      </div>
+      <p class="muted">Use your token to consume protected endpoints.</p>
+    </article>
 
-    <div class="card">
-      <h2>Acceso</h2>
-      <p>La autenticacion se gestiona por API con JWT.</p>
-    </div>
-
-    <div class="card">
-      <h2>Rutas principales</h2>
+    <article class="card">
+      <div class="card-header">
+        <h2>Main routes</h2>
+        <p>Key endpoints in this project</p>
+      </div>
       <ul class="list">
-        <li>Usuarios: /users/</li>
-        <li>Nutricion: /nutrition/</li>
-        <li>Actividad: /activity/</li>
-        <li>Evaluaciones: /evaluations/</li>
+        <li>Users: /users/</li>
+        <li>Nutrition: /nutrition/</li>
+        <li>Activity: /activity/</li>
+        <li>Evaluations: /evaluations/</li>
       </ul>
-    </div>
+    </article>
   </section>
 {% endblock %}
-

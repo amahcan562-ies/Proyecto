@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile | NutriTrack{% endblock %}
+{% block page_title %}Profile{% endblock %}
+{% block page_subtitle %}Update your personal data{% endblock %}
+
+{% block content %}
+  <section class="card">
+    <div class="card-header">
+      <h2>Your profile</h2>
+      <p>Keep your data updated for better recommendations</p>
+    </div>
+    {% if requires_auth %}
+      <p class="muted">Sign in to update your profile.</p>
+    {% else %}
+      <form method="post" class="form">
+        {% csrf_token %}
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="{{ form.birth_date.id_for_label }}">Birth date</label>
+            {{ form.birth_date }}
+            {{ form.birth_date.errors }}
+          </div>
+          <div class="form-field">
+            <label for="{{ form.sex.id_for_label }}">Sex</label>
+            {{ form.sex }}
+            {{ form.sex.errors }}
+          </div>
+          <div class="form-field">
+            <label for="{{ form.height_cm.id_for_label }}">Height (cm)</label>
+            {{ form.height_cm }}
+            {{ form.height_cm.errors }}
+          </div>
+          <div class="form-field">
+            <label for="{{ form.weight_kg.id_for_label }}">Weight (kg)</label>
+            {{ form.weight_kg }}
+            {{ form.weight_kg.errors }}
+          </div>
+          <div class="form-field">
+            <label for="{{ form.target_weight_kg.id_for_label }}">Target weight (kg)</label>
+            {{ form.target_weight_kg }}
+            {{ form.target_weight_kg.errors }}
+          </div>
+          <div class="form-field">
+            <label for="{{ form.goal.id_for_label }}">Goal</label>
+            {{ form.goal }}
+            {{ form.goal.errors }}
+          </div>
+        </div>
+        <button class="button" type="submit">Save profile</button>
+      </form>
+    {% endif %}
+  </section>
+{% endblock %}
+

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}History | NutriTrack{% endblock %}
+{% block page_title %}History{% endblock %}
+{% block page_subtitle %}Review your daily records{% endblock %}
+
+{% block content %}
+  <section class="card">
+    <div class="card-header">
+      <h2>Daily history</h2>
+      <p>Last 14 days summary</p>
+    </div>
+    <div class="table">
+      <div class="table-header">
+        <div>Date</div>
+        <div>Calories</div>
+        <div>Burned</div>
+        <div>Score</div>
+      </div>
+      {% for row in history_rows %}
+        <div class="table-row">
+          <div>{{ row.date }}</div>
+          <div>{{ row.calories|floatformat:0 }}</div>
+          <div>{{ row.burned }}</div>
+          <div>{{ row.score }}</div>
+        </div>
+      {% empty %}
+        <p class="muted">No daily records yet.</p>
+      {% endfor %}
+    </div>
+  </section>
+{% endblock %}
+
