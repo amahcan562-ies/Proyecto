@@ -2,6 +2,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
 from core.permissions import IsDailyRecordOwner, IsStaffOrReadOnly
+from evaluations.services import ensure_daily_evaluation
 from .models import Food, FoodConsumption
 from .serializers import FoodConsumptionSerializer, FoodSerializer
 
@@ -27,3 +28,16 @@ class FoodConsumptionViewSet(ModelViewSet):
             .filter(daily_record__user=self.request.user)
             .order_by("-created_at")
         )
+
+    def perform_create(self, serializer):
+        instance = serializer.save()
+        ensure_daily_evaluation(instance.daily_record)
+
+    def perform_update(self, serializer):
+        instance = serializer.save()
+        ensure_daily_evaluation(instance.daily_record)
+
+    def perform_destroy(self, instance):
+        daily_record = instance.daily_record
+        instance.delete()
+        ensure_daily_evaluation(daily_record)

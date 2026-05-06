@@ -6,17 +6,16 @@ from django.views import View
 from django.views.generic import TemplateView
 
 from activity.models import ActivityRecord, PhysicalActivity
-from evaluations.models import DailyEvaluation, DailyRecord
+from evaluations.models import DailyRecord
+from evaluations.services import (
+    ensure_daily_evaluation,
+    estimate_activity_calories,
+    get_user_goals,
+)
 from nutrition.models import Food, FoodConsumption
 from users.models import Profile
 
 from .forms import ActivityRecordForm, FoodConsumptionForm, ProfileForm
-
-
-DEFAULT_CALORIE_GOAL = Decimal("2200")
-DEFAULT_PROTEIN_GOAL = Decimal("120")
-DEFAULT_CARBS_GOAL = Decimal("220")
-DEFAULT_FAT_GOAL = Decimal("70")
 
 
 def _percentage(value: Decimal, goal: Decimal) -> int:
@@ -27,22 +26,23 @@ def _percentage(value: Decimal, goal: Decimal) -> int:
 
 def _build_today_context(user):
     today = timezone.localdate()
+    goals = get_user_goals(user)
     context = {
         "is_authenticated": user.is_authenticated,
         "today": today,
         "daily_record": None,
         "calories_consumed": Decimal("0"),
-        "calories_goal": DEFAULT_CALORIE_GOAL,
-        "calories_remaining": DEFAULT_CALORIE_GOAL,
+        "calories_goal": goals["calories"],
+        "calories_remaining": goals["calories"],
         "calories_percent": 0,
         "protein_total": Decimal("0"),
-        "protein_goal": DEFAULT_PROTEIN_GOAL,
+        "protein_goal": goals["protein"],
         "protein_percent": 0,
         "carbs_total": Decimal("0"),
-        "carbs_goal": DEFAULT_CARBS_GOAL,
+        "carbs_goal": goals["carbs"],
         "carbs_percent": 0,
         "fat_total": Decimal("0"),
-        "fat_goal": DEFAULT_FAT_GOAL,
+        "fat_goal": goals["fat"],
         "fat_percent": 0,
         "activity_calories": 0,
         "score": 0,
@@ -66,49 +66,27 @@ def _build_today_context(user):
         daily_record=daily_record
     ).select_related("activity")
 
-    calories = Decimal("0")
-    protein = Decimal("0")
-    carbs = Decimal("0")
-    fat = Decimal("0")
+    evaluation, totals, goals, recommendations = ensure_daily_evaluation(daily_record)
 
-    for item in consumption_qs:
-        factor = item.amount_g / Decimal("100")
-        calories += factor * item.food.calories_per_100g
-        protein += factor * item.food.protein_per_100g
-        carbs += factor * item.food.carbs_per_100g
-        fat += factor * item.food.fat_per_100g
-
-    activity_calories = sum(
-        record.calories_burned_estimated or 0 for record in activity_qs
-    )
-
-    evaluation = DailyEvaluation.objects.filter(daily_record=daily_record).first()
-    recommendations = []
-    if evaluation and evaluation.recommendations:
-        recommendations = [
-            line.strip()
-            for line in evaluation.recommendations.splitlines()
-            if line.strip()
-        ]
-
-    if not recommendations:
-        recommendations = context["recommendations"]
-
-    calories_remaining = max(DEFAULT_CALORIE_GOAL - calories, Decimal("0"))
+    calories_remaining = max(goals["calories"] - totals["calories"], Decimal("0"))
 
     context.update(
         {
             "daily_record": daily_record,
-            "calories_consumed": calories,
+            "calories_consumed": totals["calories"],
+            "calories_goal": goals["calories"],
             "calories_remaining": calories_remaining,
-            "calories_percent": _percentage(calories, DEFAULT_CALORIE_GOAL),
-            "protein_total": protein,
-            "protein_percent": _percentage(protein, DEFAULT_PROTEIN_GOAL),
-            "carbs_total": carbs,
-            "carbs_percent": _percentage(carbs, DEFAULT_CARBS_GOAL),
-            "fat_total": fat,
-            "fat_percent": _percentage(fat, DEFAULT_FAT_GOAL),
-            "activity_calories": activity_calories,
+            "calories_percent": _percentage(totals["calories"], goals["calories"]),
+            "protein_total": totals["protein"],
+            "protein_goal": goals["protein"],
+            "protein_percent": _percentage(totals["protein"], goals["protein"]),
+            "carbs_total": totals["carbs"],
+            "carbs_goal": goals["carbs"],
+            "carbs_percent": _percentage(totals["carbs"], goals["carbs"]),
+            "fat_total": totals["fat"],
+            "fat_goal": goals["fat"],
+            "fat_percent": _percentage(totals["fat"], goals["fat"]),
+            "activity_calories": totals["activity_calories"],
             "score": evaluation.score if evaluation else 0,
             "recommendations": recommendations,
             "meals_today": list(consumption_qs[:6]),
@@ -171,6 +149,7 @@ class AddFoodView(View):
             instance = form.save(commit=False)
             instance.daily_record = daily_record
             instance.save()
+            ensure_daily_evaluation(daily_record)
             return redirect("core:add_food")
 
         context = _build_today_context(request.user)
@@ -227,7 +206,14 @@ class ActivityView(View):
         if form.is_valid():
             instance = form.save(commit=False)
             instance.daily_record = daily_record
+            profile = Profile.objects.filter(user=request.user).first()
+            instance.calories_burned_estimated = estimate_activity_calories(
+                instance.activity,
+                instance.duration_min,
+                getattr(profile, "weight_kg", None),
+            )
             instance.save()
+            ensure_daily_evaluation(daily_record)
             return redirect("core:activity")
 
         context = _build_today_context(request.user)
@@ -309,6 +295,10 @@ class ProfileView(View):
         form = ProfileForm(request.POST, instance=profile)
         if form.is_valid():
             form.save()
+            daily_record, _ = DailyRecord.objects.get_or_create(
+                user=request.user, date=timezone.localdate()
+            )
+            ensure_daily_evaluation(daily_record)
             return redirect("core:profile")
 
         context = _build_today_context(request.user)

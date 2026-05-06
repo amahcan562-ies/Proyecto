@@ -37,7 +37,7 @@ class DailyEvaluationSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         ]
-        read_only_fields = ["id", "created_at", "updated_at"]
+        read_only_fields = ["id", "score", "recommendations", "created_at", "updated_at"]
 
     def validate_daily_record(self, value):
         request = self.context.get("request")
@@ -55,4 +55,3 @@ class DailyEvaluationSerializer(serializers.ModelSerializer):
                     {"daily_record": "Este registro diario ya tiene una evaluacion."}
                 )
         return attrs
-

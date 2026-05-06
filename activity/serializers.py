@@ -37,7 +37,7 @@ class ActivityRecordSerializer(serializers.ModelSerializer):
             "notes",
             "created_at",
         ]
-        read_only_fields = ["id", "created_at"]
+        read_only_fields = ["id", "calories_burned_estimated", "created_at"]
 
     def validate_daily_record(self, value):
         request = self.context.get("request")
@@ -54,4 +54,3 @@ class ActivityRecordSerializer(serializers.ModelSerializer):
 
     def validate_notes(self, value):
         return value.strip()
-

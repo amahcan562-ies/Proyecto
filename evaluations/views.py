@@ -1,10 +1,10 @@
-from django.shortcuts import render
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
 from core.permissions import IsDailyRecordOwner, IsOwner
 from .models import DailyEvaluation, DailyRecord
 from .serializers import DailyEvaluationSerializer, DailyRecordSerializer
+from .services import ensure_daily_evaluation
 
 
 class DailyRecordViewSet(ModelViewSet):
@@ -13,6 +13,14 @@ class DailyRecordViewSet(ModelViewSet):
 
     def get_queryset(self):
         return DailyRecord.objects.filter(user=self.request.user).order_by("-date")
+
+    def perform_create(self, serializer):
+        instance = serializer.save()
+        ensure_daily_evaluation(instance)
+
+    def perform_update(self, serializer):
+        instance = serializer.save()
+        ensure_daily_evaluation(instance)
 
 
 class DailyEvaluationViewSet(ModelViewSet):
@@ -25,3 +33,11 @@ class DailyEvaluationViewSet(ModelViewSet):
             .filter(daily_record__user=self.request.user)
             .order_by("-daily_record__date")
         )
+
+    def perform_create(self, serializer):
+        instance = serializer.save()
+        ensure_daily_evaluation(instance.daily_record)
+
+    def perform_update(self, serializer):
+        instance = serializer.save()
+        ensure_daily_evaluation(instance.daily_record)
