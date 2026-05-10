@@ -57,9 +57,15 @@ a {
 .brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 0.6rem;
   font-weight: 700;
   font-size: 1.1rem;
+}
+
+.brand-logo {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
 }
 
 .brand-badge {
