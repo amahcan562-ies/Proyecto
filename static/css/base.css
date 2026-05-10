@@ -63,8 +63,8 @@ a {
 }
 
 .brand-logo {
-  width: 64px;
-  height: 64px;
+  width: 28px;
+  height: 28px;
   object-fit: contain;
 }
 
@@ -432,6 +432,17 @@ a {
   border: 1px solid var(--border);
 }
 
+.button-link {
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font: inherit;
+  cursor: pointer;
+}
+
 .form {
   display: grid;
   gap: 16px;
@@ -518,6 +529,23 @@ a {
 
 .list li {
   margin: 6px 0;
+}
+
+.auth-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  padding: 24px;
+}
+
+.auth-card {
+  width: min(420px, 100%);
+}
+
+.auth-links {
+  margin-top: 16px;
+  text-align: center;
 }
 
 @media (max-width: 1100px) {

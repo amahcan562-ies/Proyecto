@@ -23,7 +23,15 @@
         <a class="nav-item {% if active_nav == 'profile' %}active{% endif %}" href="{% url 'core:profile' %}">Profile</a>
       </nav>
       <div class="sidebar-footer">
-        <a class="nav-item logout" href="#">Logout</a>
+        {% if request.user.is_authenticated %}
+          <form method="post" action="{% url 'users:web_logout' %}">
+            {% csrf_token %}
+            <button class="nav-item logout button-link" type="submit">Logout</button>
+          </form>
+        {% else %}
+          <a class="nav-item" href="{% url 'users:web_login' %}">Login</a>
+          <a class="nav-item" href="{% url 'users:web_register' %}">Register</a>
+        {% endif %}
       </div>
     </aside>
 
