@@ -308,3 +308,7 @@ class ProfileView(View):
 
 class HelpView(TemplateView):
     template_name = "core/help.html"
+
+
+class LandingView(TemplateView):
+    template_name = "core/landing.html"

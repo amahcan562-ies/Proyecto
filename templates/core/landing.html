@@ -1,0 +1,81 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NutriTrack | Inicio</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  </head>
+  <body class="landing">
+    <header class="landing-hero">
+      <div class="landing-container">
+        <nav class="landing-nav">
+          <a class="brand" href="{% url 'core:home' %}">
+            <img src="{% static 'img/Logo_NutriTrack.png' %}" alt="NutriTrack" class="brand-logo">
+            <span class="brand-text">NutriTrack</span>
+          </a>
+          <div class="landing-actions">
+            {% if request.user.is_authenticated %}
+              <a class="button ghost" href="{% url 'core:dashboard' %}">Ir al dashboard</a>
+            {% else %}
+              <a class="button ghost" href="{% url 'users:web_login' %}">Iniciar sesion</a>
+              <a class="button" href="{% url 'users:web_register' %}">Registrarse</a>
+            {% endif %}
+          </div>
+        </nav>
+
+        <section class="hero-grid hero-trello">
+          <div class="hero-copy">
+            <h1>NutriTrack te ayuda a organizar tu nutricion y actividad cada dia.</h1>
+            <p>
+              Registra comidas, actividad fisica y objetivos. Visualiza calorias,
+              macros y un score diario con recomendaciones claras.
+            </p>
+            <div class="hero-form">
+              <input type="email" placeholder="Correo electronico" aria-label="Correo electronico">
+              <a class="button" href="{% url 'users:web_register' %}">Registrate. Es gratis</a>
+            </div>
+            <p class="hero-small">¿Ya tienes cuenta? <a href="{% url 'users:web_login' %}">Inicia sesion</a></p>
+          </div>
+          <div class="hero-visual">
+            <img src="{% static 'img/landing-hero.png' %}" alt="Vista previa de NutriTrack">
+          </div>
+        </section>
+      </div>
+    </header>
+
+    <main class="landing-main">
+      <div class="landing-container">
+        <section class="landing-simple">
+          <h2>Todo lo que necesitas en un solo panel</h2>
+          <p class="muted">Nutricion, actividad y evaluacion diaria en una vista clara.</p>
+          <div class="simple-points">
+            <div>
+              <h4>Nutricion</h4>
+              <p>Macros y calorias calculadas automaticamente.</p>
+            </div>
+            <div>
+              <h4>Actividad</h4>
+              <p>Calorias quemadas y resumen diario.</p>
+            </div>
+            <div>
+              <h4>Evaluacion</h4>
+              <p>Score diario con recomendaciones claras.</p>
+            </div>
+          </div>
+          <div class="hero-form">
+            <input type="email" placeholder="Correo electronico" aria-label="Correo electronico">
+            <a class="button" href="{% url 'users:web_register' %}">Crear cuenta</a>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="landing-footer">
+      <div class="landing-container">
+        <p>NutriTrack - Proyecto TFG DAW</p>
+      </div>
+    </footer>
+  </body>
+</html>

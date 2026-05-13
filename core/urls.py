@@ -6,13 +6,14 @@ from .views import (
     DashboardView,
     HelpView,
     HistoryView,
+    LandingView,
     ProfileView,
 )
 
 app_name = "core"
 
 urlpatterns = [
-    path("", DashboardView.as_view(), name="home"),
+    path("", LandingView.as_view(), name="home"),
     path("dashboard/", DashboardView.as_view(), name="dashboard"),
     path("add-food/", AddFoodView.as_view(), name="add_food"),
     path("activity/", ActivityView.as_view(), name="activity"),

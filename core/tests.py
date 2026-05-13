@@ -6,7 +6,7 @@ class FrontendPagesTests(TestCase):
     def test_home_page_loads(self):
         response = self.client.get(reverse("core:home"))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "core/dashboard.html")
+        self.assertTemplateUsed(response, "core/landing.html")
 
     def test_help_page_loads(self):
         response = self.client.get(reverse("core:help"))
