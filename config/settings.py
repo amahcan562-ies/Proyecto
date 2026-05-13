@@ -3,25 +3,25 @@
 import os
 from pathlib import Path
 from datetime import timedelta
+from urllib.parse import urlparse
+from dotenv import load_dotenv
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv(BASE_DIR / ".env")
 
-def env_bool(key: str, default: bool = False) -> bool:
-    return os.getenv(key, str(default)).strip().lower() in {"1", "true", "yes", "on"}
+#SECRETO
+SECRET_KEY = os.getenv("SECRET_KEY")
 
+# NO EJECUTAR EN PRODUCCIÓN CON DEBUG EN TRUE
+DEBUG = os.getenv("DEBUG", "False") == "True"
 
-def env_list(key: str, default: str = "") -> list[str]:
-    value = os.getenv(key, default)
-    return [item.strip() for item in value.split(",") if item.strip()]
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
 
+CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
 
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-dev-only-change-me")
-DEBUG = env_bool("DJANGO_DEBUG", True)
-ALLOWED_HOSTS = env_list("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1")
-CSRF_TRUSTED_ORIGINS = env_list("DJANGO_CSRF_TRUSTED_ORIGINS", "")
-
+# Application definition
 
 DJANGO_APPS = [
     "django.contrib.admin",
@@ -50,6 +50,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -80,11 +81,14 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("DB_NAME"),
+        "USER": os.getenv("DB_USER"),
+        "PASSWORD": os.getenv("DB_PASSWORD"),
+        "HOST": os.getenv("DB_HOST", "localhost"),
+        "PORT": os.getenv("DB_PORT", "5432"),
     }
 }
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -102,7 +106,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-LANGUAGE_CODE = "es-es"
+LANGUAGE_CODE = "es"
 TIME_ZONE = "Europe/Madrid"
 USE_I18N = True
 USE_TZ = True
@@ -111,6 +115,7 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"]
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -123,6 +128,8 @@ SESSION_COOKIE_SAMESITE = "Lax"
 CSRF_COOKIE_SAMESITE = "Lax"
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = "DENY"
+SECURE_REFERRER_POLICY = "same-origin"
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 if not DEBUG:
     SECURE_SSL_REDIRECT = True
@@ -150,3 +157,4 @@ SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION": True,
     "UPDATE_LAST_LOGIN": True,
 }
+
