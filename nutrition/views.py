@@ -1,3 +1,4 @@
+from django.db.models import Q
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
@@ -15,7 +16,15 @@ class FoodViewSet(ModelViewSet):
         queryset = Food.objects.all()
         if not self.request.user.is_staff:
             queryset = queryset.filter(is_active=True)
-        return queryset.order_by("name", "brand")
+        query = self.request.query_params.get("q", "").strip()
+        if query:
+            queryset = queryset.filter(Q(name__icontains=query) | Q(brand__icontains=query))
+
+        queryset = queryset.order_by("name", "brand")
+        limit = self.request.query_params.get("limit", "").strip()
+        if limit.isdigit():
+            queryset = queryset[: min(int(limit), 100)]
+        return queryset
 
 
 class FoodConsumptionViewSet(ModelViewSet):

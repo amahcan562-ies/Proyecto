@@ -12,6 +12,7 @@ class FoodSerializer(serializers.ModelSerializer):
             "id",
             "name",
             "brand",
+            "image_url",
             "calories_per_100g",
             "protein_per_100g",
             "carbs_per_100g",

@@ -1,0 +1,153 @@
+[
+  {
+    "name": "Arroz blanco cocido",
+    "brand": "",
+    "calories_per_100g": 130,
+    "protein_per_100g": 2.7,
+    "carbs_per_100g": 28.0,
+    "fat_per_100g": 0.3,
+    "fiber_per_100g": 0.4,
+    "image_url": ""
+  },
+  {
+    "name": "Pechuga de pollo",
+    "brand": "",
+    "calories_per_100g": 165,
+    "protein_per_100g": 31.0,
+    "carbs_per_100g": 0,
+    "fat_per_100g": 3.6,
+    "fiber_per_100g": 0,
+    "image_url": ""
+  },
+  {
+    "name": "Pasta cocida",
+    "brand": "",
+    "calories_per_100g": 150,
+    "protein_per_100g": 5.5,
+    "carbs_per_100g": 30.0,
+    "fat_per_100g": 1.0,
+    "fiber_per_100g": 1.8,
+    "image_url": ""
+  },
+  {
+    "name": "Huevo entero",
+    "brand": "",
+    "calories_per_100g": 143,
+    "protein_per_100g": 13.0,
+    "carbs_per_100g": 0.7,
+    "fat_per_100g": 9.5,
+    "fiber_per_100g": 0,
+    "image_url": ""
+  },
+  {
+    "name": "Platano",
+    "brand": "",
+    "calories_per_100g": 89,
+    "protein_per_100g": 1.1,
+    "carbs_per_100g": 22.8,
+    "fat_per_100g": 0.3,
+    "fiber_per_100g": 2.6,
+    "image_url": ""
+  },
+  {
+    "name": "Leche semidesnatada",
+    "brand": "",
+    "calories_per_100g": 47,
+    "protein_per_100g": 3.3,
+    "carbs_per_100g": 4.7,
+    "fat_per_100g": 1.6,
+    "fiber_per_100g": 0,
+    "image_url": ""
+  },
+  {
+    "name": "Avena",
+    "brand": "",
+    "calories_per_100g": 389,
+    "protein_per_100g": 16.9,
+    "carbs_per_100g": 66.3,
+    "fat_per_100g": 6.9,
+    "fiber_per_100g": 10.6,
+    "image_url": ""
+  },
+  {
+    "name": "Salmon",
+    "brand": "",
+    "calories_per_100g": 208,
+    "protein_per_100g": 20.0,
+    "carbs_per_100g": 0,
+    "fat_per_100g": 13.0,
+    "fiber_per_100g": 0,
+    "image_url": ""
+  },
+  {
+    "name": "Pan integral",
+    "brand": "",
+    "calories_per_100g": 247,
+    "protein_per_100g": 13.0,
+    "carbs_per_100g": 41.0,
+    "fat_per_100g": 4.2,
+    "fiber_per_100g": 7.0,
+    "image_url": ""
+  },
+  {
+    "name": "Manzana",
+    "brand": "",
+    "calories_per_100g": 52,
+    "protein_per_100g": 0.3,
+    "carbs_per_100g": 13.8,
+    "fat_per_100g": 0.2,
+    "fiber_per_100g": 2.4,
+    "image_url": ""
+  },
+  {
+    "name": "Lentejas cocidas",
+    "brand": "",
+    "calories_per_100g": 116,
+    "protein_per_100g": 9.0,
+    "carbs_per_100g": 20.0,
+    "fat_per_100g": 0.4,
+    "fiber_per_100g": 7.9,
+    "image_url": ""
+  },
+  {
+    "name": "Pechuga de pavo",
+    "brand": "",
+    "calories_per_100g": 135,
+    "protein_per_100g": 30.0,
+    "carbs_per_100g": 0,
+    "fat_per_100g": 1.0,
+    "fiber_per_100g": 0,
+    "image_url": ""
+  },
+  {
+    "name": "Yogur natural",
+    "brand": "",
+    "calories_per_100g": 61,
+    "protein_per_100g": 3.5,
+    "carbs_per_100g": 4.7,
+    "fat_per_100g": 3.3,
+    "fiber_per_100g": 0,
+    "image_url": ""
+  },
+  {
+    "name": "Atun en conserva",
+    "brand": "",
+    "calories_per_100g": 132,
+    "protein_per_100g": 29.0,
+    "carbs_per_100g": 0,
+    "fat_per_100g": 1.0,
+    "fiber_per_100g": 0,
+    "image_url": ""
+  },
+  {
+    "name": "Aceite de oliva",
+    "brand": "",
+    "calories_per_100g": 884,
+    "protein_per_100g": 0,
+    "carbs_per_100g": 0,
+    "fat_per_100g": 100.0,
+    "fiber_per_100g": 0,
+    "image_url": ""
+  }
+]
+

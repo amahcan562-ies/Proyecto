@@ -6,6 +6,7 @@ from django.db.models import Q
 class Food(models.Model):
 	name = models.CharField(max_length=120, db_index=True)
 	brand = models.CharField(max_length=120, blank=True)
+	image_url = models.URLField(blank=True)
 	calories_per_100g = models.DecimalField(
 		max_digits=6,
 		decimal_places=2,
