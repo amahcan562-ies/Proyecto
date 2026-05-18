@@ -91,4 +91,3 @@ class FoodConsumptionSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         return super().validate(attrs)
-

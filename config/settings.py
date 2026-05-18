@@ -19,8 +19,14 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
-
 CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
+
+ADMIN_ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.getenv("ADMIN_ALLOWED_HOSTS", "andresini.tech").split(",")
+    if host.strip()
+]
+ADMIN_USERNAME = os.getenv("ADMIN_USERNAME", "").strip()
 
 # Application definition
 
@@ -161,4 +167,3 @@ SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION": True,
     "UPDATE_LAST_LOGIN": True,
 }
-
