@@ -10,7 +10,7 @@ class Food(models.Model):
 
 	name = models.CharField(max_length=120, db_index=True)
 	brand = models.CharField(max_length=120, blank=True)
-	image_url = models.URLField(blank=True)
+	image_url = models.CharField(max_length=255, blank=True)
 	default_unit = models.CharField(
 		max_length=10,
 		choices=UnitChoices.choices,

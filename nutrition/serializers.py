@@ -1,6 +1,8 @@
 from decimal import Decimal
 
 from rest_framework import serializers
+from django.core.validators import URLValidator
+from django.core.exceptions import ValidationError
 
 from .models import Food, FoodConsumption
 
@@ -35,6 +37,21 @@ class FoodSerializer(serializers.ModelSerializer):
 
     def validate_brand(self, value):
         return value.strip()
+
+    def validate_image_url(self, value):
+        value = (value or "").strip()
+        if not value:
+            return value
+        if value.startswith("/static/"):
+            return value
+        validator = URLValidator()
+        try:
+            validator(value)
+        except ValidationError as exc:
+            raise serializers.ValidationError(
+                "Introduce una URL valida o una ruta /static/..."
+            ) from exc
+        return value
 
     def validate(self, attrs):
         protein = attrs.get("protein_per_100g", getattr(self.instance, "protein_per_100g", Decimal("0")))
