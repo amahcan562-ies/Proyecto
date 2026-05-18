@@ -1,53 +1,53 @@
 {% extends 'base.html' %}
 
-{% block title %}Profile | NutriTrack{% endblock %}
-{% block page_title %}Profile{% endblock %}
-{% block page_subtitle %}Update your personal data{% endblock %}
+{% block title %}Perfil | NutriTrack{% endblock %}
+{% block page_title %}Perfil{% endblock %}
+{% block page_subtitle %}Actualiza tus datos personales{% endblock %}
 
 {% block content %}
   <section class="card">
     <div class="card-header">
-      <h2>Your profile</h2>
-      <p>Keep your data updated for better recommendations</p>
+      <h2>Tu perfil</h2>
+      <p>Mantén tus datos actualizados para obtener recomendaciones más precisas</p>
     </div>
     {% if requires_auth %}
-      <p class="muted">Sign in to update your profile.</p>
+      <p class="muted">Inicia sesión para editar tu perfil</p>
     {% else %}
       <form method="post" class="form">
         {% csrf_token %}
         <div class="form-grid">
           <div class="form-field">
-            <label for="{{ form.birth_date.id_for_label }}">Birth date</label>
+            <label for="{{ form.birth_date.id_for_label }}">Fecha de nacimiento</label>
             {{ form.birth_date }}
             {{ form.birth_date.errors }}
           </div>
           <div class="form-field">
-            <label for="{{ form.sex.id_for_label }}">Sex</label>
+            <label for="{{ form.sex.id_for_label }}">Sexo</label>
             {{ form.sex }}
             {{ form.sex.errors }}
           </div>
           <div class="form-field">
-            <label for="{{ form.height_cm.id_for_label }}">Height (cm)</label>
+            <label for="{{ form.height_cm.id_for_label }}">Altura (cm)</label>
             {{ form.height_cm }}
             {{ form.height_cm.errors }}
           </div>
           <div class="form-field">
-            <label for="{{ form.weight_kg.id_for_label }}">Weight (kg)</label>
+            <label for="{{ form.weight_kg.id_for_label }}">Peso (kg)</label>
             {{ form.weight_kg }}
             {{ form.weight_kg.errors }}
           </div>
           <div class="form-field">
-            <label for="{{ form.target_weight_kg.id_for_label }}">Target weight (kg)</label>
+            <label for="{{ form.target_weight_kg.id_for_label }}">Peso objetivo (kg)</label>
             {{ form.target_weight_kg }}
             {{ form.target_weight_kg.errors }}
           </div>
           <div class="form-field">
-            <label for="{{ form.goal.id_for_label }}">Goal</label>
+            <label for="{{ form.goal.id_for_label }}">Objetivo</label>
             {{ form.goal }}
             {{ form.goal.errors }}
           </div>
         </div>
-        <button class="button" type="submit">Save profile</button>
+        <button class="button" type="submit">Guardar perfil</button>
       </form>
     {% endif %}
   </section>

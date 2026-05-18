@@ -1,6 +1,7 @@
 """Configuracion base de Django para NutriTrack."""
 
 import os
+import sys
 from pathlib import Path
 from datetime import timedelta
 from urllib.parse import urlparse
@@ -138,6 +139,9 @@ if not DEBUG:
     SECURE_HSTS_SECONDS = 60 * 60 * 24 * 30
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
+
+if "test" in sys.argv:
+    SECURE_SSL_REDIRECT = False
 
 
 REST_FRAMEWORK = {

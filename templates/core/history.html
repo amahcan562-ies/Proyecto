@@ -1,21 +1,21 @@
 {% extends 'base.html' %}
 
-{% block title %}History | NutriTrack{% endblock %}
-{% block page_title %}History{% endblock %}
-{% block page_subtitle %}Review your daily records{% endblock %}
+{% block title %}Historial | NutriTrack{% endblock %}
+{% block page_title %}Historial{% endblock %}
+{% block page_subtitle %}Revisa tus registros diarios{% endblock %}
 
 {% block content %}
   <section class="card">
     <div class="card-header">
-      <h2>Daily history</h2>
-      <p>Last 14 days summary</p>
+      <h2>Historial diario</h2>
+      <p>Resumen de los últimos 14 días</p>
     </div>
     <div class="table">
       <div class="table-header">
-        <div>Date</div>
-        <div>Calories</div>
-        <div>Burned</div>
-        <div>Score</div>
+        <div>Fecha</div>
+        <div>Calorías</div>
+        <div>Quemadas</div>
+        <div>Puntuación</div>
       </div>
       {% for row in history_rows %}
         <div class="table-row">
@@ -25,7 +25,7 @@
           <div>{{ row.score }}</div>
         </div>
       {% empty %}
-        <p class="muted">No daily records yet.</p>
+        <p class="muted">No existen registros por el momento.</p>
       {% endfor %}
     </div>
   </section>

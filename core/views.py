@@ -97,6 +97,34 @@ def _build_today_context(user):
     return context
 
 
+def _get_recent_foods(user, limit=8):
+    if user.is_authenticated:
+        recent = (
+            Food.objects.filter(consumptions__daily_record__user=user, is_active=True)
+            .order_by("-consumptions__created_at")
+            .distinct()
+        )
+        if recent.exists():
+            return recent[:limit]
+
+    return Food.objects.filter(is_active=True).order_by("-updated_at")[:limit]
+
+
+def _get_recent_activities(user, limit=8):
+    if user.is_authenticated:
+        recent = (
+            PhysicalActivity.objects.filter(
+                records__daily_record__user=user, is_active=True
+            )
+            .order_by("-records__created_at")
+            .distinct()
+        )
+        if recent.exists():
+            return recent[:limit]
+
+    return PhysicalActivity.objects.filter(is_active=True).order_by("-updated_at")[:limit]
+
+
 
 class DashboardView(TemplateView):
     template_name = "core/dashboard.html"
@@ -117,7 +145,7 @@ class AddFoodView(View):
             {
                 "active_nav": "add_food",
                 "form": FoodConsumptionForm(),
-                "foods": Food.objects.filter(is_active=True)[:20],
+                "foods": _get_recent_foods(request.user),
                 "consumptions": (
                     FoodConsumption.objects.filter(daily_record=context["daily_record"]).select_related("food")
                     if request.user.is_authenticated
@@ -135,7 +163,7 @@ class AddFoodView(View):
                     "active_nav": "add_food",
                     "form": FoodConsumptionForm(request.POST),
                     "form_error": "Necesitas iniciar sesion para registrar alimentos.",
-                    "foods": Food.objects.filter(is_active=True)[:20],
+                    "foods": _get_recent_foods(request.user),
                     "consumptions": [],
                 }
             )
@@ -157,7 +185,7 @@ class AddFoodView(View):
             {
                 "active_nav": "add_food",
                 "form": form,
-                "foods": Food.objects.filter(is_active=True)[:20],
+                "foods": _get_recent_foods(request.user),
                 "consumptions": FoodConsumption.objects.filter(
                     daily_record=daily_record
                 ).select_related("food"),
@@ -175,7 +203,7 @@ class ActivityView(View):
             {
                 "active_nav": "activity",
                 "form": ActivityRecordForm(),
-                "activities": PhysicalActivity.objects.filter(is_active=True)[:20],
+                "activities": _get_recent_activities(request.user),
                 "records": (
                     ActivityRecord.objects.filter(daily_record=context["daily_record"]).select_related("activity")
                     if request.user.is_authenticated
@@ -193,7 +221,7 @@ class ActivityView(View):
                     "active_nav": "activity",
                     "form": ActivityRecordForm(request.POST),
                     "form_error": "Necesitas iniciar sesion para registrar actividad.",
-                    "activities": PhysicalActivity.objects.filter(is_active=True)[:20],
+                    "activities": _get_recent_activities(request.user),
                     "records": [],
                 }
             )
@@ -221,7 +249,7 @@ class ActivityView(View):
             {
                 "active_nav": "activity",
                 "form": form,
-                "activities": PhysicalActivity.objects.filter(is_active=True)[:20],
+                "activities": _get_recent_activities(request.user),
                 "records": ActivityRecord.objects.filter(
                     daily_record=daily_record
                 ).select_related("activity"),

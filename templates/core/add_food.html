@@ -1,15 +1,16 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Add Food | NutriTrack{% endblock %}
-{% block page_title %}Add Food{% endblock %}
-{% block page_subtitle %}Log your meals and calories{% endblock %}
+{% block title %}Añadir comida | NutriTrack{% endblock %}
+{% block page_title %}Añadir comida{% endblock %}
+{% block page_subtitle %}Registra tus comidas y calorías{% endblock %}
 
 {% block content %}
   <section class="grid-two">
     <article class="card">
       <div class="card-header">
-        <h2>Log food</h2>
-        <p>Register a new consumption for today</p>
+        <h2>Registrar comida</h2>
+        <p>Registra un consumo nuevo para hoy</p>
       </div>
       <form method="post" class="form">
         {% csrf_token %}
@@ -18,39 +19,48 @@
         {% endif %}
         <div class="form-grid">
           <div class="form-field">
-            <label for="{{ form.food.id_for_label }}">Food</label>
-            {{ form.food }}
+              <label for="{{ form.food.id_for_label }}">Alimento</label>
+            <div class="food-picker" data-foods-url="{% url 'nutrition:food-list' %}" data-placeholder-url="{% static 'img/food-placeholder.svg' %}">
+              <div class="food-picker-row">
+                <button class="button ghost" type="button" data-open-food-modal>+ Añadir alimento</button>
+                <div class="food-selected" id="food-selected">No has seleccionado ningun alimento.</div>
+              </div>
+              <div class="food-picker-hint">Busca y selecciona un alimento desde el catalogo.</div>
+            </div>
+            <div class="visually-hidden">
+              {{ form.food }}
+            </div>
             {{ form.food.errors }}
           </div>
-          <div class="form-field">
-            <label for="{{ form.amount_g.id_for_label }}">Amount (g)</label>
+          <div class="form-field" id="amount-field">
+            <label for="{{ form.amount_g.id_for_label }}">Cantidad (g)</label>
             {{ form.amount_g }}
             {{ form.amount_g.errors }}
           </div>
           <div class="form-field">
-            <label for="{{ form.meal_type.id_for_label }}">Meal type</label>
+            <label for="{{ form.meal_type.id_for_label }}">Tipo de comida</label>
             {{ form.meal_type }}
             {{ form.meal_type.errors }}
           </div>
           <div class="form-field">
-            <label for="{{ form.consumed_at.id_for_label }}">Time</label>
+            <label for="{{ form.consumed_at.id_for_label }}">Hora</label>
             {{ form.consumed_at }}
             {{ form.consumed_at.errors }}
           </div>
           <div class="form-field form-full">
-            <label for="{{ form.notes.id_for_label }}">Notes</label>
+            <label for="{{ form.notes.id_for_label }}">Notas</label>
             {{ form.notes }}
             {{ form.notes.errors }}
           </div>
         </div>
-        <button class="button" type="submit">Save consumption</button>
+        <button class="button" type="submit">Guardar consumo</button>
       </form>
     </article>
 
     <article class="card">
       <div class="card-header">
-        <h2>Available foods</h2>
-        <p>Most used items from your catalog</p>
+        <h2>Alimentos recientes</h2>
+        <p>Últimos alimentos usados o añadidos</p>
       </div>
       <div class="list-stack">
         {% for food in foods %}
@@ -59,33 +69,50 @@
               <p class="list-title">{{ food.name }}</p>
               <p class="list-meta">{{ food.calories_per_100g|floatformat:0 }} kcal / 100g</p>
             </div>
-            <span class="list-tag">{{ food.brand|default:"Generic" }}</span>
+            <span class="list-tag">{{ food.brand|default:"Generico" }}</span>
           </div>
         {% empty %}
-          <p class="muted">No foods available yet.</p>
+          <p class="muted">No hay alimentos disponibles todavía.</p>
         {% endfor %}
       </div>
     </article>
   </section>
 
+  <div class="modal" id="food-modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-overlay" data-close-food-modal></div>
+    <div class="modal-content" role="document">
+      <div class="modal-header">
+        <div>
+          <h2>Selecciona un alimento</h2>
+          <p class="muted">Busca en el catálogo y añádelo a tu comida.</p>
+        </div>
+        <button class="icon-button" type="button" aria-label="Cerrar" data-close-food-modal>×</button>
+      </div>
+      <div class="modal-search">
+        <input type="search" id="food-search" placeholder="Buscar por nombre o marca" autocomplete="off">
+      </div>
+      <div class="food-grid" id="food-grid"></div>
+      <p class="muted" id="food-empty" hidden>No se encontraron alimentos.</p>
+    </div>
+  </div>
+
   <section class="card">
     <div class="card-header">
-      <h2>Today's meals</h2>
-      <p>Latest consumptions logged today</p>
+      <h2>Comidas de hoy</h2>
+      <p>Últimos consumos registrados hoy</p>
     </div>
     <div class="list-stack">
       {% for item in consumptions %}
         <div class="list-row">
           <div>
             <p class="list-title">{{ item.food.name }}</p>
-            <p class="list-meta">{{ item.amount_g|floatformat:0 }} g - {{ item.meal_type }}</p>
+            <p class="list-meta">{{ item.amount_g|floatformat:0 }} g - {{ item.get_meal_type_display }}</p>
           </div>
           <span class="list-tag">{{ item.created_at|date:"H:i" }}</span>
         </div>
       {% empty %}
-        <p class="muted">No meals logged yet.</p>
+        <p class="muted">No hay comidas registradas todavía.</p>
       {% endfor %}
     </div>
   </section>
 {% endblock %}
-

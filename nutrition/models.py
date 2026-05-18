@@ -4,9 +4,26 @@ from django.db.models import Q
 
 
 class Food(models.Model):
+	class UnitChoices(models.TextChoices):
+		GRAM = "GRAM", "Gramos"
+		PORTION = "PORTION", "Racion"
+
 	name = models.CharField(max_length=120, db_index=True)
 	brand = models.CharField(max_length=120, blank=True)
 	image_url = models.URLField(blank=True)
+	default_unit = models.CharField(
+		max_length=10,
+		choices=UnitChoices.choices,
+		default=UnitChoices.GRAM,
+	)
+	portion_g = models.DecimalField(
+		max_digits=6,
+		decimal_places=2,
+		validators=[MinValueValidator(0), MaxValueValidator(2000)],
+		blank=True,
+		null=True,
+	)
+	portion_label = models.CharField(max_length=40, blank=True, default="racion")
 	calories_per_100g = models.DecimalField(
 		max_digits=6,
 		decimal_places=2,
@@ -94,6 +111,13 @@ class FoodConsumption(models.Model):
 		max_digits=6,
 		decimal_places=2,
 		validators=[MinValueValidator(0.01), MaxValueValidator(5000)],
+	)
+	portion_count = models.DecimalField(
+		max_digits=5,
+		decimal_places=2,
+		validators=[MinValueValidator(0.1), MaxValueValidator(50)],
+		blank=True,
+		null=True,
 	)
 	meal_type = models.CharField(
 		max_length=12,

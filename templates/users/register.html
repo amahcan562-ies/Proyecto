@@ -10,7 +10,7 @@
   <body class="auth-page">
     <main class="card auth-card">
       <h1>Crear cuenta</h1>
-      <p class="muted">Empieza a registrar tu nutricion y actividad.</p>
+      <p class="muted">Empieza a registrar tu nutrición y actividad.</p>
       <form method="post" class="form">
         {% csrf_token %}
         {{ form.non_field_errors }}
@@ -37,7 +37,7 @@
         <button class="button" type="submit">Registrarme</button>
       </form>
       <p class="auth-links">
-        Ya tienes cuenta? <a href="{% url 'users:web_login' %}">Inicia sesion</a>
+        Ya tienes cuenta? <a href="{% url 'users:web_login' %}">Inicia sesión</a>
       </p>
     </main>
   </body>

@@ -16,21 +16,21 @@
         </a>
       </div>
       <nav class="sidebar-nav">
-        <a class="nav-item {% if active_nav == 'dashboard' %}active{% endif %}" href="{% url 'core:dashboard' %}">Dashboard</a>
-        <a class="nav-item {% if active_nav == 'add_food' %}active{% endif %}" href="{% url 'core:add_food' %}">Add Food</a>
-        <a class="nav-item {% if active_nav == 'activity' %}active{% endif %}" href="{% url 'core:activity' %}">Activity</a>
-        <a class="nav-item {% if active_nav == 'history' %}active{% endif %}" href="{% url 'core:history' %}">History</a>
-        <a class="nav-item {% if active_nav == 'profile' %}active{% endif %}" href="{% url 'core:profile' %}">Profile</a>
+        <a class="nav-item {% if active_nav == 'dashboard' %}active{% endif %}" href="{% url 'core:dashboard' %}">Panel</a>
+        <a class="nav-item {% if active_nav == 'add_food' %}active{% endif %}" href="{% url 'core:add_food' %}">Añadir comida</a>
+        <a class="nav-item {% if active_nav == 'activity' %}active{% endif %}" href="{% url 'core:activity' %}">Actividad</a>
+        <a class="nav-item {% if active_nav == 'history' %}active{% endif %}" href="{% url 'core:history' %}">Historial</a>
+        <a class="nav-item {% if active_nav == 'profile' %}active{% endif %}" href="{% url 'core:profile' %}">Perfil</a>
       </nav>
       <div class="sidebar-footer">
         {% if request.user.is_authenticated %}
           <form method="post" action="{% url 'users:web_logout' %}">
             {% csrf_token %}
-            <button class="nav-item logout button-link" type="submit">Logout</button>
+            <button class="nav-item logout button-link" type="submit">Cerrar sesión</button>
           </form>
         {% else %}
-          <a class="nav-item" href="{% url 'users:web_login' %}">Login</a>
-          <a class="nav-item" href="{% url 'users:web_register' %}">Register</a>
+          <a class="nav-item" href="{% url 'users:web_login' %}">Iniciar sesión</a>
+          <a class="nav-item" href="{% url 'users:web_register' %}">Registrarse</a>
         {% endif %}
       </div>
     </aside>
@@ -46,12 +46,15 @@
           <h1 class="page-title">{% block page_title %}{% endblock %}</h1>
           <p class="page-subtitle">{% block page_subtitle %}{% endblock %}</p>
         </div>
-        <div class="topbar-user">
-          {% if request.user.is_authenticated %}
-            <span class="user-name">{{ request.user.username }}</span>
-          {% else %}
-            <span class="user-name">Invitado</span>
-          {% endif %}
+        <div class="topbar-actions">
+          <a class="button small" href="{% url 'core:home' %}">Volver</a>
+          <div class="topbar-user">
+            {% if request.user.is_authenticated %}
+              <span class="user-name">{{ request.user.username }}</span>
+            {% else %}
+              <span class="user-name">Invitado</span>
+            {% endif %}
+          </div>
         </div>
       </header>
 

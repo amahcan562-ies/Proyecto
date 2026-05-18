@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 
-{% block title %}Activity | NutriTrack{% endblock %}
-{% block page_title %}Activity{% endblock %}
-{% block page_subtitle %}Track your workouts and energy{% endblock %}
+{% block title %}Actividad | NutriTrack{% endblock %}
+{% block page_title %}Actividad{% endblock %}
+{% block page_subtitle %}Registra tus entrenamientos y energía{% endblock %}
 
 {% block content %}
   <section class="grid-two">
     <article class="card">
       <div class="card-header">
-        <h2>Log activity</h2>
-        <p>Register a new activity session</p>
+        <h2>Registrar actividad</h2>
+        <p>Añade una nueva sesión a tu día</p>
       </div>
       <form method="post" class="form">
         {% csrf_token %}
@@ -18,46 +18,46 @@
         {% endif %}
         <div class="form-grid">
           <div class="form-field">
-            <label for="{{ form.activity.id_for_label }}">Activity</label>
+            <label for="{{ form.activity.id_for_label }}">Actividad</label>
             {{ form.activity }}
             {{ form.activity.errors }}
           </div>
           <div class="form-field">
-            <label for="{{ form.duration_min.id_for_label }}">Duration (min)</label>
+            <label for="{{ form.duration_min.id_for_label }}">Duración (min)</label>
             {{ form.duration_min }}
             {{ form.duration_min.errors }}
           </div>
           <div class="form-field">
-            <label for="{{ form.performed_at.id_for_label }}">Time</label>
+            <label for="{{ form.performed_at.id_for_label }}">Hora</label>
             {{ form.performed_at }}
             {{ form.performed_at.errors }}
           </div>
           <div class="form-field form-full">
-            <label for="{{ form.notes.id_for_label }}">Notes</label>
+            <label for="{{ form.notes.id_for_label }}">Notas</label>
             {{ form.notes }}
             {{ form.notes.errors }}
           </div>
         </div>
-        <button class="button" type="submit">Save activity</button>
+        <button class="button" type="submit">Guardar actividad</button>
       </form>
     </article>
 
     <article class="card">
       <div class="card-header">
-        <h2>Available activities</h2>
-        <p>Suggested activities from your catalog</p>
+        <h2>Actividades recientes</h2>
+        <p>Últimas actividades usadas o anadidas</p>
       </div>
       <div class="list-stack">
         {% for activity in activities %}
           <div class="list-row">
             <div>
               <p class="list-title">{{ activity.name }}</p>
-              <p class="list-meta">Intensity: {{ activity.intensity }}</p>
+              <p class="list-meta">Intensidad: {{ activity.get_intensity_display }}</p>
             </div>
             <span class="list-tag">MET {{ activity.met_value }}</span>
           </div>
         {% empty %}
-          <p class="muted">No activities available yet.</p>
+          <p class="muted">No hay actividades disponibles todavía.</p>
         {% endfor %}
       </div>
     </article>
@@ -65,8 +65,8 @@
 
   <section class="card">
     <div class="card-header">
-      <h2>Today's activities</h2>
-      <p>Latest sessions logged today</p>
+      <h2>Actividades de hoy</h2>
+      <p>Últimas sesiones registradas hoy</p>
     </div>
     <div class="list-stack">
       {% for item in records %}
@@ -78,7 +78,7 @@
           <span class="list-tag">{{ item.calories_burned_estimated|default:"-" }} kcal</span>
         </div>
       {% empty %}
-        <p class="muted">No activity logged yet.</p>
+        <p class="muted">No hay actividades registradas todavía.</p>
       {% endfor %}
     </div>
   </section>

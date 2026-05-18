@@ -1,0 +1,43 @@
+[
+  {
+    "name": "Andar",
+    "met_value": 3.5,
+    "intensity": "LOW"
+  },
+  {
+    "name": "Correr",
+    "met_value": 9.8,
+    "intensity": "HIGH"
+  },
+  {
+    "name": "Nadar",
+    "met_value": 8.0,
+    "intensity": "HIGH"
+  },
+  {
+    "name": "Jugar al tenis",
+    "met_value": 7.3,
+    "intensity": "MODERATE"
+  },
+  {
+    "name": "Jugar al futbol",
+    "met_value": 7.0,
+    "intensity": "HIGH"
+  },
+  {
+    "name": "Ciclismo",
+    "met_value": 6.8,
+    "intensity": "MODERATE"
+  },
+  {
+    "name": "Entrenamiento de fuerza",
+    "met_value": 6.0,
+    "intensity": "MODERATE"
+  },
+  {
+    "name": "Yoga",
+    "met_value": 2.5,
+    "intensity": "LOW"
+  }
+]
+

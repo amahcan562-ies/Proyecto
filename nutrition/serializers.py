@@ -13,6 +13,9 @@ class FoodSerializer(serializers.ModelSerializer):
             "name",
             "brand",
             "image_url",
+            "default_unit",
+            "portion_g",
+            "portion_label",
             "calories_per_100g",
             "protein_per_100g",
             "carbs_per_100g",
@@ -54,8 +57,8 @@ class FoodConsumptionSerializer(serializers.ModelSerializer):
         decimal_places=2,
         min_value=Decimal("0.01"),
         max_value=Decimal("5000"),
+        required=True,
     )
-
     class Meta:
         model = FoodConsumption
         fields = [
@@ -85,3 +88,7 @@ class FoodConsumptionSerializer(serializers.ModelSerializer):
 
     def validate_notes(self, value):
         return value.strip()
+
+    def validate(self, attrs):
+        return super().validate(attrs)
+

@@ -8,7 +8,13 @@ from users.models import Profile
 class FoodConsumptionForm(forms.ModelForm):
     class Meta:
         model = FoodConsumption
-        fields = ["food", "amount_g", "meal_type", "consumed_at", "notes"]
+        fields = [
+            "food",
+            "amount_g",
+            "meal_type",
+            "consumed_at",
+            "notes",
+        ]
         widgets = {
             "consumed_at": forms.TimeInput(attrs={"type": "time"}),
         }
@@ -16,6 +22,15 @@ class FoodConsumptionForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["food"].queryset = Food.objects.filter(is_active=True)
+        self.fields["amount_g"].required = True
+
+    def clean(self):
+        cleaned = super().clean()
+        amount_g = cleaned.get("amount_g")
+        if not amount_g:
+            self.add_error("amount_g", "Introduce los gramos consumidos.")
+
+        return cleaned
 
 
 class ActivityRecordForm(forms.ModelForm):

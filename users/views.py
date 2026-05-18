@@ -59,7 +59,9 @@ class WebRegisterView(View):
 	template_name = "users/register.html"
 
 	def get(self, request):
-		form = UserRegisterForm()
+		email = request.GET.get("email", "").strip()
+		initial = {"email": email} if email else None
+		form = UserRegisterForm(initial=initial)
 		return render(request, self.template_name, {"form": form})
 
 	def post(self, request):

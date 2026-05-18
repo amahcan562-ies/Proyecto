@@ -1,57 +1,57 @@
 {% extends 'base.html' %}
 
-{% block title %}Dashboard | NutriTrack{% endblock %}
-{% block page_title %}Dashboard{% endblock %}
+{% block title %}Panel | NutriTrack{% endblock %}
+{% block page_title %}Panel{% endblock %}
 {% block page_subtitle %}{{ today|date:"l, F j, Y" }}{% endblock %}
 
 {% block content %}
   <section class="flow-card">
-    <div class="flow-label">User Flow</div>
+    <div class="flow-label">Flujo</div>
     <div class="flow-links">
-      <a class="flow-link active" href="{% url 'core:dashboard' %}">Dashboard</a>
+      <a class="flow-link active" href="{% url 'core:dashboard' %}">Panel</a>
       <span class="flow-sep">></span>
-      <a class="flow-link" href="{% url 'core:add_food' %}">Add Food</a>
+      <a class="flow-link" href="{% url 'core:add_food' %}">Añadir comida</a>
       <span class="flow-sep">></span>
-      <a class="flow-link" href="{% url 'core:activity' %}">Add Activity</a>
+      <a class="flow-link" href="{% url 'core:activity' %}">Añadir actividad</a>
       <span class="flow-sep">></span>
-      <a class="flow-link" href="{% url 'core:history' %}">View History</a>
+      <a class="flow-link" href="{% url 'core:history' %}">Ver historial</a>
       <span class="flow-sep">></span>
-      <a class="flow-link" href="{% url 'core:profile' %}">Edit Profile</a>
+      <a class="flow-link" href="{% url 'core:profile' %}">Editar perfil</a>
     </div>
   </section>
 
   <section class="stats-grid">
     <article class="stat-card">
-      <p class="stat-label">Calories Consumed</p>
+      <p class="stat-label">Calorias consumidas</p>
       <p class="stat-value">{{ calories_consumed|floatformat:0 }}</p>
-      <p class="stat-meta">of {{ calories_goal|floatformat:0 }} kcal goal</p>
+      <p class="stat-meta">de {{ calories_goal|floatformat:0 }} kcal objetivo</p>
     </article>
     <article class="stat-card">
-      <p class="stat-label">Remaining</p>
+      <p class="stat-label">Restantes</p>
       <p class="stat-value highlight">{{ calories_remaining|floatformat:0 }}</p>
-      <p class="stat-meta">kcal left today</p>
+      <p class="stat-meta">kcal restantes hoy</p>
     </article>
     <article class="stat-card">
-      <p class="stat-label">Nutritional Score</p>
+      <p class="stat-label">Puntuacion nutricional</p>
       <p class="stat-value score">{{ score }}</p>
-      <p class="stat-meta">out of 100</p>
+      <p class="stat-meta">sobre 100</p>
     </article>
     <article class="stat-card">
-      <p class="stat-label">Activity</p>
+      <p class="stat-label">Actividad</p>
       <p class="stat-value accent">{{ activity_calories }}</p>
-      <p class="stat-meta">kcal burned</p>
+      <p class="stat-meta">kcal quemadas</p>
     </article>
   </section>
 
   <section class="grid-two">
     <article class="card">
       <div class="card-header">
-        <h2>Daily Calorie Progress</h2>
-        <p>Track your intake vs. goal</p>
+        <h2>Progreso diario de calorias</h2>
+        <p>Sigue tu ingesta frente al objetivo</p>
       </div>
       <div class="progress-block">
         <div class="progress-header">
-          <span>Total Calories</span>
+          <span>Calorias totales</span>
           <span>{{ calories_percent }}%</span>
         </div>
         <div class="progress-bar">
@@ -91,7 +91,7 @@
 
     <article class="card card-reco">
       <div class="card-header">
-        <h2>Daily Recommendations</h2>
+        <h2>Recomendaciones diarias</h2>
       </div>
       <div class="reco-list">
         {% for item in recommendations %}
@@ -102,7 +102,7 @@
             </div>
           </div>
         {% empty %}
-          <p class="muted">No recommendations yet.</p>
+          <p class="muted">Aun no hay recomendaciones.</p>
         {% endfor %}
       </div>
     </article>
@@ -112,10 +112,10 @@
     <article class="card">
       <div class="card-header row-between">
         <div>
-          <h2>Today's Meals</h2>
-          <p>All foods logged today</p>
+          <h2>Comidas de hoy</h2>
+          <p>Todos los alimentos registrados hoy</p>
         </div>
-        <a class="button small" href="{% url 'core:add_food' %}">Add Food</a>
+        <a class="button small" href="{% url 'core:add_food' %}">Añadir comida</a>
       </div>
       <div class="list-stack">
         {% for item in meals_today %}
@@ -124,10 +124,10 @@
               <p class="list-title">{{ item.food.name }}</p>
               <p class="list-meta">{{ item.amount_g|floatformat:0 }} g</p>
             </div>
-            <span class="list-tag">{{ item.meal_type }}</span>
+            <span class="list-tag">{{ item.get_meal_type_display }}</span>
           </div>
         {% empty %}
-          <p class="muted">No meals registered yet.</p>
+          <p class="muted">Aun no hay comidas registradas.</p>
         {% endfor %}
       </div>
     </article>
@@ -135,10 +135,10 @@
     <article class="card">
       <div class="card-header row-between">
         <div>
-          <h2>Today's Activities</h2>
-          <p>Physical activities logged</p>
+          <h2>Actividades de hoy</h2>
+          <p>Actividades fisicas registradas</p>
         </div>
-        <a class="button ghost" href="{% url 'core:activity' %}">Add Activity</a>
+        <a class="button" href="{% url 'core:activity' %}">Añadir actividad</a>
       </div>
       <div class="list-stack">
         {% for item in activities_today %}
@@ -150,7 +150,7 @@
             <span class="list-tag">{{ item.calories_burned_estimated|default:"-" }} kcal</span>
           </div>
         {% empty %}
-          <p class="muted">No activity registered yet.</p>
+          <p class="muted">Aun no hay actividad registrada.</p>
         {% endfor %}
       </div>
     </article>

@@ -2,9 +2,9 @@ import json
 from pathlib import Path
 
 from django.core.management.base import BaseCommand
+from django.db.models import Q
 
 from nutrition.models import Food
-
 
 class Command(BaseCommand):
     help = "Carga un catalogo inicial de alimentos sin duplicados."
@@ -34,13 +34,19 @@ class Command(BaseCommand):
 
         created = 0
         updated = 0
+        keep_keys = set()
         for item in foods:
             name = item.get("name", "").strip()
             if not name:
                 continue
             brand = item.get("brand", "").strip()
+            keep_keys.add((name, brand))
+
             defaults = {
                 "image_url": item.get("image_url", "").strip(),
+                "default_unit": "GRAM",
+                "portion_g": None,
+                "portion_label": "",
                 "calories_per_100g": item.get("calories_per_100g", 0),
                 "protein_per_100g": item.get("protein_per_100g", 0),
                 "carbs_per_100g": item.get("carbs_per_100g", 0),
@@ -59,7 +65,16 @@ class Command(BaseCommand):
             else:
                 updated += 1
 
-        self.stdout.write(
-            f"Alimentos cargados. Nuevos: {created}. Actualizados: {updated}."
-        )
+        keep_query = Q()
+        for name, brand in keep_keys:
+            keep_query |= Q(name=name, brand=brand)
 
+        deleted = 0
+        if keep_query:
+            to_delete = Food.objects.exclude(keep_query)
+            deleted = to_delete.count()
+            to_delete.delete()
+
+        self.stdout.write(
+            f"Alimentos cargados. Nuevos: {created}. Actualizados: {updated}. Eliminados: {deleted}."
+        )
